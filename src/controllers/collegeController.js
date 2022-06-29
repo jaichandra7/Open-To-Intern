@@ -5,6 +5,7 @@ const createCollege = async function(req,res){
     try{
 
         const data = req.body
+        const { fname, lname, title, email, password } = authordata
 
 
 

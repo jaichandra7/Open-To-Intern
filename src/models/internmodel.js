@@ -1,5 +1,7 @@
 const mongoose = require("mongoose")
 const collegeModel = require("./collegeModel")
+const ObjectId = mongoose.Schema.Types.ObjectId
+
 
 const internSchema = new mongoose.Schema({
     name:{
@@ -14,10 +16,12 @@ const internSchema = new mongoose.Schema({
         unique:true
     },
     collegeId:{
-        ref:collegeModel,
-        isDeleted:{ type:Boolean , default:false }
-    }
+        type : ObjectId,
+        ref:'College',
+       
+    },
+    isDeleted:{ type:Boolean , default:false }
 },{timestamps:true})
 
 
-module.exports = mongoose.model('internModel',internSchema)
+module.exports = mongoose.model('Intern',internSchema)

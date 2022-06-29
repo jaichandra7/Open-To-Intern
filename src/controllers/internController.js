@@ -26,3 +26,9 @@ const addIntern = async function(req,res){
 }
 
 module.exports.addIntern =addIntern
+
+
+
+
+
+// req.user = decorded.authorId
