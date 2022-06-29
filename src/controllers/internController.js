@@ -1,5 +1,6 @@
-const internModel = require('../models/collegeModel')
-const eValidator = require('email-validator')
+const internModel = require('../models/internModel')
+const Validator = require('email-validator')
+const collegeModel = require('../models/collegeModel')
 
 var phoneNo = /^\d{10}$/
 
@@ -20,27 +21,29 @@ const addIntern = async function(req,res){
             return
         }
 
-        if(typeof name !=="string" || name.trim().length == 0){
+        if(typeof name !== "string" || name.trim().length == 0){
             res.status(400).send({status: false, message: "Enter the Intern name properly "})
             return
         }
 
         if(!email){
-            res.status(400).send({status: false, message: "Oops! you forget to enter name of your College"})
+            res.status(400).send({status: false, message: "Oops! you forget enter email ID"})
             return
         }
         
-        let checkEmail = eValidator.validate(email)
+        let checkEmail = Validator.validate(email)
         if (!checkEmail){
             res.status(400).send({status: false, message: "Make sure the email is right format or not??"})
             return
         }
 
-        let uniqueEmail = await internModel.findOne(email)
-        if (uniqueEmail){
-            res.status(400).send({status: false, message: "Sorry! this email is already exist"})
-            return
-        }
+        // let uniqueEmail = await internModel.findOne(email)
+        // if (uniqueEmail){
+        //     res.status(400).send({status: false, message: "Sorry! this email is already exist"})
+        //     return
+        // }
+
+        // console.log(uniqueEmail);
 
         
         if(!mobile){
@@ -71,10 +74,6 @@ const addIntern = async function(req,res){
     }
 }
 
-module.exports.addIntern =addIntern
 
 
-
-
-
-// req.user = decorded.authorId
+module.exports.addIntern = addIntern

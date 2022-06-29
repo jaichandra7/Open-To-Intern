@@ -1,4 +1,5 @@
 const collegeModel = require('../models/collegeModel')
+const internModel = require('../models/internModel')
 
 const createCollege = async function(req,res){
 
@@ -60,4 +61,44 @@ const createCollege = async function(req,res){
     }
 }
 
+
+
+const getCollegeDetails = async function(req, res){
+    try{
+        const name = req.query.collegeName;
+
+        if(!name){
+            return res.status(400).send({stats:false, message:"Please Provide College Name"});
+        }
+        const find = await collegeModel.findOne({name:name, isDeleted:false}).select({_id:1}); // id
+
+        const data = await collegeModel.findById(find).select({_id:0, name:1, fullName:1, logoLink:1});
+
+        if(!data){
+            return res.status(404).send({sataus:false, message: "No college Exits with the Name" })
+        }
+
+
+        
+        const match=await internModel.find({collegeId:find._id, isDeleted:false}).select({_id:1,name:1,email:1,mobile:1});
+        if(match.length == 0){
+            return res.status(404).send({status:false, message:"No Intern Found For This College" })
+        }
+        
+
+
+        const collegeDetails = JSON.parse(JSON.stringify(data))
+        collegeDetails.interns=match
+
+        res.status(200).send({status:true, data:collegeDetails})
+    }
+    catch (err){
+        res.status(500).send({status:false, message:err.message});
+
+    }
+};
+
+
+
+module.exports.getCollegeDetails = getCollegeDetails
 module.exports.createCollege = createCollege
