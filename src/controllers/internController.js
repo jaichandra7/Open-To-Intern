@@ -1,10 +1,12 @@
-const internModel = require('../models/collegeModel')
+const collegeModel = require('../models/collegeModel')
+const internModel = require('../models/internModel')
+
 
 const addIntern = async function(req,res){
 
     try{
-
-        const data = req.body
+        const data = req.body;
+        
 
         if(Object.keys(data).length == 0){
             return res.status(400).send({status: false, message: "Please provide the Intern Details"})

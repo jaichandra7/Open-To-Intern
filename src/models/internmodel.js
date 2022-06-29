@@ -5,13 +5,16 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const internSchema = new mongoose.Schema({
     name:{
-        required:true
+        type :String ,
+        required:true,
     },
     email:{
+        type :String ,
         required:true,
         unique:true
     },
     mobile:{
+        type :String ,
         required:true,
         unique:true
     },
@@ -20,7 +23,9 @@ const internSchema = new mongoose.Schema({
         ref:'College',
        
     },
-    isDeleted:{ type:Boolean , default:false }
+    isDeleted:{ 
+        type:Boolean ,
+        default:false }
 },{timestamps:true})
 
 

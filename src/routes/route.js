@@ -7,9 +7,7 @@ const internController = require('../controllers/internController')
 router.post('/functionup/colleges', collegeController.createCollege )
 
 
-
-
-
+router.post ('/functionup/interns' , internController.addIntern)
 
 
 router.all("/**", function (req, res) {
