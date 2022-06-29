@@ -36,11 +36,11 @@ const addIntern = async function(req,res){
             return
         }
 
-        let uniqueEmail = await internModel.findOne(email)
-        if (uniqueEmail){
-            res.status(400).send({status: false, message: "Sorry! this email is already exist"})
-            return
-        }
+        // let uniqueEmail = await internModel.findOne({email :email})
+        // if (uniqueEmail){
+        //     res.status(400).send({status: false, message: "Sorry! this email is already exist"})
+        //     return
+        // }
 
         
         if(!mobile){
