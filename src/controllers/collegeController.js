@@ -1,6 +1,9 @@
 const collegeModel = require('../models/collegeModel')
 const internModel = require('../models/internModel')
 
+// const collegeModel = require("../models/collegeModel");
+// const internModel = require("../models/internModel");
+
 const createCollege = async function(req,res){
 
     try{
@@ -75,7 +78,7 @@ const getCollegeDetails = async function(req, res){
         const data = await collegeModel.findById(find).select({_id:0, name:1, fullName:1, logoLink:1});
 
         if(!data){
-            return res.status(404).send({sataus:false, message: "No college Exits with the Name" })
+            return res.status(404).send({status:false, message: "No college Exist with the Name" })
         }
 
 
@@ -102,3 +105,69 @@ const getCollegeDetails = async function(req, res){
 
 module.exports.getCollegeDetails = getCollegeDetails
 module.exports.createCollege = createCollege
+
+
+
+
+// const isValid = function (value) {
+//     if (typeof(value) === "undefined" || typeof(value) === null) return false;
+//     if (typeof(value) === "string" && value.trim().length === 0) return false;
+//     if (typeof(value) != "string") return false;
+//     return true
+// }
+
+// const createCollege = async function(req,res) {
+//     try{
+//         let data = req.body;
+//         const validLogoLink = /(http|https(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/
+//         .test(data.logoLink)
+
+//         if(!isValid(data.name))return res.status(400).send({status: false, message:"name is required"})
+//         if(!data.name)return res.status(400).send({status: false, message:"name is required"});
+//         const validateName = await collegeModel.findOne({name: data.name})
+//         if(validateName)return res.status(400).send({status: false, message:"name must be unique"})
+
+//         if(!isValid(data.fullName))return res.status(400).send({status: false, message:"fullname is required"})
+//         if(!data.fullName) return res.status(400).send({status: false, message:"fullname is required"});
+
+
+//         if (!data.logoLink) return res.status(400).send({ status: false, message: "logolink is required" });
+//         if (!validLogoLink) return res.status(400).send({ status: false, message: "logolink is invalid" });
+
+//         const createCollegeData = await collegeModel.create(data)
+//         res.status(201).send({ status:true , message: createCollegeData})
+//     } catch (err) {
+//         res.status(500).send({ status:false , error: err.message})
+//     }
+// }
+
+
+// const getCollegeDetails = async function(req, res){
+//     try{
+//         let data = req.query;
+//         let fullName = data.fullName;
+//         let collegeName = data.name;
+//         const collegeData = await collegeModel.findOne({name: collegeName , isDeleted: false})
+//         if (!collegeData)return res.status(400).send({ status: false, message: "enter a valid college name" })
+//         fullName = collegeData.fullName;
+//         const fcollege = {
+//             name: collegeData.name,
+//             fullName: collegeData.fullName,
+//             logoLink: collegeData.logoLink
+//         }
+//         const collegeId = collegeData._id
+//         const getInterns = await internModel.find()
+//         console.log(getInterns)
+
+//         if(getInterns.length!=0){
+//             fcollege.intrest = getInterns
+//             res.status(200).send({status: true , data: fcollege})
+//         }
+//         if(getInterns.length == 0)return res.status(400).send({ status: false, message: "No interns found" })
+//     }catch (err) {
+//         res.status(500).send({ status:false , error: err.message})
+//     }
+// }
+
+// module.exports.getCollegeDetails = getCollegeDetails
+// module.exports.createCollege = createCollege
