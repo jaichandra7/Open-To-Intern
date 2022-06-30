@@ -14,18 +14,23 @@ const createCollege = async function(req,res){
             return
         }
         // **************************
-        let collArr =["name", "fullName", "logoLink"]
-        for (let i = 0; i < collArr.length;i++){
-            let cData = []
-            if(!Object.keys(data).includes(collArr[i])){
-                    cData.push(collArr[i])
-            }
-            
-
-            res.status(400).send({status: false, message: "you forget cData fields", data: cData})
-
-        }
-
+        // let x = function(data){
+        //     let collArr =["name", "fullName", "logoLink"]
+        //     for (let i = 0; i < collArr.length;i++){
+        //         let cData = "";
+        //         if(!Object.keys(data).includes(collArr[i])){
+        //                 cData = cData+ ' '+(collArr[i])
+        //         }
+                
+        //         if(cData){
+        //             return  `Provide ${cData} Fields`
+        //         }
+        //         if(collArr[i] = ""){
+        //             cData= collArr[i] + "is required"
+        //         }
+        //      }
+        //     }
+        //     console.log(x(name))
         // **************************
 
 

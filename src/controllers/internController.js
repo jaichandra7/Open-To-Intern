@@ -11,7 +11,8 @@ const addIntern = async function(req,res){
 
         const data = req.body
         const { name, email, mobile,collegeId} = data
-
+        
+        // Validations
         if(Object.keys(data).length == 0){
             return res.status(400).send({status: false, message: "Please provide the Intern Details"})
         }
@@ -37,17 +38,20 @@ const addIntern = async function(req,res){
             return
         }
 
-        // let uniqueEmail = await internModel.findOne(email)
-        // if (uniqueEmail){
-        //     res.status(400).send({status: false, message: "Sorry! this email is already exist"})
-        //     return
-        // }
+        let uniqueEmail = await internModel.findOne({email})
+        if (uniqueEmail){
+            res.status(400).send({status: false, message: "Sorry! this email is already exist"})
+            return
+        }
 
-        // console.log(uniqueEmail);
-
-        
         if(!mobile){
             res.status(400).send({status: false, message: "Mobile Number can't be Empty"})
+            return
+        }
+
+        let uniqueMob = await internModel.find({mobile})
+        if (uniqueMob[0]){
+            res.status(400).send({status: false, message: "Sorry! this Mobile Number  is already exist"})
             return
         }
 
@@ -61,6 +65,13 @@ const addIntern = async function(req,res){
             res.status(400).send({status: false, message: "CollegeId can't be Empty"})
             return
         }
+
+        let uniqueCollegeId = await internModel.find({collegeId})
+        if (uniqueCollegeId.length == 0){
+            res.status(400).send({status: false, message: "No College Found with this College ID"})
+            return
+        }
+
 
         const internData = await internModel.create(data)
         return res.status(201).send({status: true, data: internData})
