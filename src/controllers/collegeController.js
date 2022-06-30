@@ -84,9 +84,10 @@ const getCollegeDetails = async function(req, res){
         if(match.length == 0){
             return res.status(404).send({status:false, message:"No Intern Found For This College" })
         }
-        
 
 
+
+        // const collegeDetails =data
         const collegeDetails = JSON.parse(JSON.stringify(data))
         collegeDetails.interns=match
 
