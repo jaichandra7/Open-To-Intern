@@ -7,6 +7,7 @@ const internSchema = new mongoose.Schema({
     name:{
         type :String ,
         required:true,
+        trim :true
     },
     email:{
         type :String ,
@@ -24,7 +25,7 @@ const internSchema = new mongoose.Schema({
        
     },
     isDeleted:{ 
-        type:Boolean ,
+        type: Boolean ,
         default:false }
 },{timestamps:true})
 
