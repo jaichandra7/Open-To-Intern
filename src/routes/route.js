@@ -4,6 +4,7 @@ const collegeController = require('../controllers/collegeController')
 const internController = require('../controllers/internController')
 
 //API for ADD College
+
 router.post('/functionup/colleges', collegeController.createCollege )
 
 router.post('/functionup/interns', internController.addIntern)

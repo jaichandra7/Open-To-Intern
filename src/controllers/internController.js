@@ -17,7 +17,7 @@ const addIntern = async function(req,res){
         }
 
         if(!name){
-            res.status(400).send({status: false, message: "Oops! you forget to enter name of your College"})
+            res.status(400).send({status: false, message: "Please provide your name !!"})
             return
         }
 
@@ -33,7 +33,7 @@ const addIntern = async function(req,res){
         
         let checkEmail = Validator.validate(email)
         if (!checkEmail){
-            res.status(400).send({status: false, message: "Make sure the email is right format or not??"})
+            res.status(400).send({status: false, message: "Make sure the email is in right format "})
             return
         }
 
@@ -47,18 +47,18 @@ const addIntern = async function(req,res){
 
         
         if(!mobile){
-            res.status(400).send({status: false, message: "Oops! you forget to enter name of your College"})
+            res.status(400).send({status: false, message: "Mobile Number can't be Empty"})
             return
         }
 
         if(!phoneNo.test(mobile)){
-            res.status(400).send({status: false, message: "Invalid Mobile Number"})
+            res.status(400).send({status: false, message: "Use a valid Mobile Number"})
             return
         }
 
 
         if(!collegeId){
-            res.status(400).send({status: false, message: "Oops! you forget to enter name of your College"})
+            res.status(400).send({status: false, message: "CollegeId can't be Empty"})
             return
         }
 
