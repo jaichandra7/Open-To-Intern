@@ -3,7 +3,7 @@ const router = express.Router()
 const collegeController = require('../controllers/collegeController')
 const internController = require('../controllers/internController')
 
-//API for ADD College
+//API's
 
 router.post('/functionup/colleges', collegeController.createCollege )
 
