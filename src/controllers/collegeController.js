@@ -75,7 +75,6 @@ const createCollege = async function(req,res){
 
 // ***********************************************************************************************
 
-
         const getCollegeDetails = async function(req, res){
 
             try{
