@@ -139,7 +139,7 @@ const createCollege = async function(req,res){
                 //Interns Value Is Empty //No Interns Found
             }
             catch (err) {
-                res.status(500).send({ status:false , error: err.message})
+                res.status(500).send({ status:false , msg: err.message})
             }
         }
 
