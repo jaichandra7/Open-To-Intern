@@ -81,7 +81,7 @@ const addIntern = async function(req,res){
        if(typeof(data.isDeleted) != "undefined" && typeof(data.isDeleted) != "boolean"){
         return res.status(400).send({
             status : false,
-            msg : "Incorrect input for isDeleted key"
+            message : "Incorrect input for isDeleted key"
         })  
        }
         (typeof(data.isDeleted) == "undefined") ? query.isDeleted = false : query.isDeleted = data.isDeleted

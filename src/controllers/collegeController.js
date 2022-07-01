@@ -8,7 +8,8 @@ const createCollege = async function(req,res){
 
         const data = req.body
         const { name, fullName, logoLink } = data ;
-        const validName = /^[A-Za-z]+$/ ;
+        const validName = /^[A-Za-z -]+$/ ;
+        const validFullname = /^[A-Za-z -,]+$/
         const validlogolink = /(http|https(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg)/
 
         // Validations
@@ -28,7 +29,7 @@ const createCollege = async function(req,res){
             return
         }
         if(!validName.test(name)){
-            res.status(400).send({status: false, message: " Use Characters Only !!"})
+            res.status(400).send({status: false, message: "  Provide name in correct format !!"})
             return
         }
         let uniqueName = await collegeModel.findOne({name : name})
@@ -44,6 +45,10 @@ const createCollege = async function(req,res){
 
         if(typeof fullName !=="string" || fullName.trim().length == 0){
             res.status(400).send({status: false, message: "Enter the college fullName properly "})
+            return
+        }
+        if(!validFullname.test(fullName)){
+            res.status(400).send({status: false, message: " Provide fullname in correct format !!"})
             return
         }
         
@@ -98,9 +103,9 @@ const createCollege = async function(req,res){
                     res.status(400).send({status: false, message: "Enter the college Name properly "})
                     return
                 }
-                const collegeData = await collegeModel.findOne({name: collegeName , isDeleted: false})
 
-                if (!collegeData)return res.status(400).send({ status: false, message: "No college name" })
+                const collegeData = await collegeModel.findOne({name: collegeName , isDeleted: false})
+                if (!collegeData)return res.status(400).send({ status: false, message: "No college found for the query" })
                 
                 const collegeDetails = {
                     name: collegeData.name,
