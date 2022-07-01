@@ -3,71 +3,83 @@
 const collegeModel = require('../models/collegeModel')
 const internModel = require('../models/internModel')
 
+
 const createCollege = async function(req,res){
 
     try{
-        
+
         const data = req.body
         const { name, fullName, logoLink } = data ;
-        const validName = /^[A-Za-z]+$/ ;
+        const validName = /^[A-Za-z -]+$/ ;
+        const validFullname = /^[A-Za-z -,]+$/
+        const validlogolink = /(http|https(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg)/
+
+        // Validations
 
         if(Object.keys(data).length == 0 ){
             res.status(400).send({status: false, message: "you forget to fill all of these fields"})
             return
         }
-        // // **************************
-        // let collArr =["name", "fullName", "logoLink"]
-        // for (let i = 0; i < collArr.length;i++){
-        //     let cData = []
-        //     if(!Object.keys(data).includes(collArr[i])){
-        //             cData.push(collArr[i])
-        //     }
-            
-
-        //     res.status(400).send({status: false, message: "you forget cData fields", data: cData})
-
-        // }
-
-        // **************************
-
-
+         //Values Cannot Be Empty
+        
         if(!name){
             res.status(400).send({status: false, message: "Oops! you forget to enter name of your College"})
             return
         }
+        //Please Enter The College Name
 
         if(typeof name !=="string" || name.trim().length == 0){
             res.status(400).send({status: false, message: "Enter the college name properly "})
             return
         }
+        //Enter the College Name In String
         if(!validName.test(name)){
-            res.status(400).send({status: false, message: " Use Characters Only !!"})
+            res.status(400).send({status: false, message: "  Provide name in correct format !!"})
             return
         }
+        //Only characters are allowed
+        let uniqueName = await collegeModel.findOne({name : name})
+        if(uniqueName) {
+                res.status(400).send({status: false, message: "College Name already exists"})
+                return 
+            }
+            //College Name Is Already Registered
+    
         if(!fullName){
             res.status(400).send({status: false, message: "Oops! you forget to enter Full Name of your College"})
             return
         }
+        //Please Provide Full Name Of The College
 
         if(typeof fullName !=="string" || fullName.trim().length == 0){
             res.status(400).send({status: false, message: "Enter the college fullName properly "})
             return
         }
-
+        if(!validFullname.test(fullName)){
+            res.status(400).send({status: false, message: " Provide fullname in correct format !!"})
+            return
+        }
+        
         if(!logoLink){
             res.status(400).send({status: false, message: "Oops! you forget to enter LOGO URL of your College"})
             return
         }
-
+        //Please Provide The Logo Url
 
          if(typeof logoLink !=="string" || logoLink.trim().length == 0){
             res.status(400).send({status: false, message: "Make sure the LOGO URL is correct or not??"})
             return
         }
+        //The Logo Must Be In String and Not Blank
+
+        if(!validlogolink.test(logoLink)){
+            res.status(400).send({status: false, message: "Invalid Link format"})
+            return 
+        }
+        
 
         const collegeData = await collegeModel.create(data)
         return res.status(201).send({status: true, data: collegeData})
-
 
     }
     catch(error){
@@ -79,71 +91,36 @@ const createCollege = async function(req,res){
 
 // ***********************************************************************************************
 
-// const getCollegeDetails = async function(req, res){
-
-//     try{
-//         const name = req.query.collegeName;
-
-//         if(!name){
-//             return res.status(400).send({stats:false, message:"Please Provide College Name"});
-//         }
-//         const find = await collegeModel.findOne({name:name, isDeleted:false}).select({_id:1}); // id
-
-//         const data = await collegeModel.findById(find).select({_id:0, name:1, fullName:1, logoLink:1});
-
-//         if(!data){
-//             return res.status(404).send({sataus:false, message: "No college Exits with the Name" })
-//         }
-        
-// //          const match=await internModel.find({collegeId:find._id, isDeleted:false}).select({_id:1,name:1,email:1,mobile:1});
-//         const internInfo = await internModel.find().populate('collegeId')
-//         if(internInfo.length == 0){
-//              return res.status(404).send({status:false, message:"No Intern Found For This College" })
-//          }
-//        console.log(internInfo)
-//         if(match.length == 0){
-//             return res.status(404).send({status:false, message:"No Intern Found For This College" })
-//         }
-//         // console.log(match)
-//         // const collegeDetails = JSON.parse(JSON.stringify(data))
-//         // collegeDetails.interns=match
-
-//         res.status(200).send({status:true, data:collegeDetails})
-//      }
-//     catch (err){
-//         res.status(500).send({status:false, message:err.message});
-
-//     }
-// };
-
-
-// const getCollegeDetails  = async function (req , res){
-//     try{
-//         let collegeName = req.query.collegeName ;
-//         let x = await collegeModel.find({name :collegeName})
-//         if(!x[0]){
-//             res.status(400).send({status : false ,  message: "Collehge not found"})
-//             return
-//         }
-//         let y = await internModel.find().populate('')
-//     }
-// }
-        // const data = await collegeModel.find({name : name , isDeleted : false})
-
         const getCollegeDetails = async function(req, res){
 
             try{
                 let data =req.query
+
+                // validations
+
                 if(Object.keys(data).length == 0 ){
                     res.status(400).send({status: false, message: "Query cannot be Empty"})
                     return
                 }
+                //Blank Query Is Not Accepted!
+                
+                let collegeName = req.query.collegeName.trim();
+                if(!collegeName ) {
+                    res.status(400).send({status: false, message: "College Name can't be Empty "})
+                    return
+                }
+                //Entered College Name Is Not Valid // College Name Cannot Be Blank
 
-                let collegeName = req.query.collegeName;
+                if(collegeName.trim().length == 0){
+                    res.status(400).send({status: false, message: "Enter the college Name properly "})
+                    return
+                }
+
                 const collegeData = await collegeModel.findOne({name: collegeName , isDeleted: false})
-                // console.log(collegeData)
-
-                if (!collegeData)return res.status(400).send({ status: false, message: "enter a valid college name" })
+                if (!collegeData){
+                res.status(400).send({ status: false, message: "No college found for the query"})
+                   return   
+                }
                 
                 const collegeDetails = {
                     name: collegeData.name,
@@ -151,9 +128,7 @@ const createCollege = async function(req,res){
                     logoLink: collegeData.logoLink
                 }
 
-                // const collegeId = collegeData._id
                 const getInterns = await internModel.find({collegeId :collegeData._id}).select({_id: 1,name :1 ,email:1 , mobile :1 })
-                // console.log(getInterns)
         
                 if(getInterns.length!=0){
                     collegeDetails.interns = getInterns
@@ -161,6 +136,7 @@ const createCollege = async function(req,res){
                 }
 
                 if(getInterns.length == 0)return res.status(400).send({ status: false, message: "No interns found" })
+                //Interns Value Is Empty //No Interns Found
             }
             catch (err) {
                 res.status(500).send({ status:false , error: err.message})
@@ -169,3 +145,7 @@ const createCollege = async function(req,res){
 
 module.exports.getCollegeDetails = getCollegeDetails
 module.exports.createCollege = createCollege
+
+
+
+
